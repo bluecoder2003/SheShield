@@ -18,6 +18,8 @@ type OrganizationType = {
 const ListOfOrgs = () => {
   const [organizations, setOrganizations] = useState<OrganizationType[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -55,8 +57,16 @@ const ListOfOrgs = () => {
     fetchOrganizations();
   }, []);
 
+  if (loading) {
+    return <p className="text-center text-lg">Loading organizations...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-red-500">{error}</p>;
+  }
+
   const filteredOrganizations = organizations.filter((org) =>
-    org.name.toLowerCase().includes(searchQuery.toLowerCase())
+    org.organizationName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -75,19 +85,20 @@ const ListOfOrgs = () => {
               placeholder="Search organizations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
+              className="w-full px-3 py-2 border rounded-md text-gray-600"
             />
           </div>
 
           <div className="space-y-6 h-96 overflow-y-auto">
             {filteredOrganizations.map((org) => (
-              <div key={org.id} className="bg-gray-50 p-4 rounded-lg shadow-md">
-                <h2 className="text-lg font-medium mb-2 text-gray-700">{org.name}</h2>
-                <p className="text-gray-500 mb-4">{org.details}</p>
-                <Link href={`/report/${org.id}`}>
-                  <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md transition-colors">
-                    File Report
-                  </button>
+              <div key={org._id} className="bg-gray-50 p-4 rounded-lg shadow-md">
+                <h2 className="text-lg font-medium mb-2 text-gray-700">{org.organizationName}</h2>
+                <p className="text-textblack">Department: {org.department}</p>
+                <p className="text-textblack">Designation: {org.desg}</p>
+                <p className="text-textblack">Office Phone: {org.officephoneno}</p>
+                <p className="text-textblack">Address: {org.officeAddress}</p>
+                <Link href={`/report/${org._id}`} className="flex justify-center w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md transition-colors mt-2">
+                  File Report
                 </Link>
               </div>
             ))}
