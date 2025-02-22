@@ -21,11 +21,11 @@ export const register = async (req, res) => {
       }
   
       // Employee (User) Validation - No password field at all
-      if (role === "user") {
-        if (!id || !organizationName) {
-          return res.status(400).json({ message: "Employee ID and Organization Name are required for users" });
-        }
-      }
+      // if (role === "user") {
+      //   if (!id || !organizationName) {
+      //     return res.status(400).json({ message: "Employee ID and Organization Name are required for users" });
+      //   }
+      // }
   
       // HR (Org) Validation - Requires password and other details
       if (role === "org") {

@@ -13,7 +13,7 @@ import { verifyToken } from '../middleware/authmiddleware.js';
 const router = Router();
 
 // Public Routes
-router.post('/register', register,authorizeRoles('admin','org','user')); //done
+router.post('/register', register,authorizeRoles('admin','org')); //done
 router.post('/login', login);//done
 router.post('/logout', logout);//done
 
