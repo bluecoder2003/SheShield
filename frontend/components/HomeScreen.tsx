@@ -50,10 +50,10 @@ export default function LandingPage() {
             <div className="flex items-center space-x-8">
               <span>06.04.23</span>
               <span>London</span>
-              <Link href="/auth/login">
+              <Link href="/report/listoforgs">
             <button className="bg-white text-purple-700 px-4 py-2 rounded-lg font-semibold 
               hover:bg-purple-100 transition-colors">
-              login
+              Report
             </button>
           </Link>
           <Link href="/auth/signup">

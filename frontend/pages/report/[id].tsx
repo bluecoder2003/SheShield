@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { X, Upload } from 'lucide-react';
 
 const EmployeeReport = () => {
+  const router = useRouter();
+  const { id: orgId } = router.query;
+
   const [employeeId, setEmployeeId] = useState('');
   const [harasserName, setHarasserName] = useState('');
   const [details, setDetails] = useState('');
@@ -19,6 +23,7 @@ const EmployeeReport = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log({
+      orgId,
       employeeId,
       harasserName,
       details,
@@ -41,11 +46,11 @@ const EmployeeReport = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label className="block text-sm text-gray-600">
-                Employee ID
+                Organization ID
               </label>
               <input
                 type="text"
-                value={employeeId}
+                value={orgId as string}
                 readOnly
                 className="w-full px-3 py-2 border rounded-md bg-gray-50 text-gray-600"
               />
