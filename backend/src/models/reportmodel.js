@@ -14,7 +14,7 @@ const ReportSchema = new Schema(
         //for online threat
         platname: {
             type: String,
-            unique: true,
+            
         },//for photo,video leak,online threat
         harassername: {
             type: String,
@@ -32,29 +32,7 @@ const ReportSchema = new Schema(
             type:String,
             required:true,
         },//harassment details//for all
-        screenshots:{
-            type:String,
-            required:true,
-        },//prrof of harassment
-        
-        //for private video leak
-        video:{
-            type:String,
-            required:true,
-        },
-        //for private photo leak
-        photo:{
-            type:String,
-            required:true,
-        },
-        
-        //for sexual abuse
-        place:{
-            type:String,
-            required:true,
-        },
-        
-        type: {
+       type: {
             type: String,
             enum: ['Online Threat','Sexual Abuse', 'Censored photograph','Private Video Leak'],//stalking ta ekhane add korte hobe
             required: true

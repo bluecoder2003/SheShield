@@ -23,20 +23,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/auth/login": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/auth/login.js"
-    ],
     "/report/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/report/[id].js"
-    ],
-    "/report/listoforgs": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/report/listoforgs.js"
     ],
     "/report/organization": [
       "static/chunks/webpack.js",

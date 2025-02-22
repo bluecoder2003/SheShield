@@ -1,36 +1,96 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { X, Upload } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const EmployeeReport = () => {
   const router = useRouter();
-  const { id: orgId } = router.query;
+  const { id: orgid } = router.query;
 
-  const [employeeId, setEmployeeId] = useState('');
-  const [harasserName, setHarasserName] = useState('');
-  const [details, setDetails] = useState('');
-  const [description, setDescription] = useState('');
+  const [harassername, setHarasserName] = useState('');
+  const [harrasserdetails, setHarrasserDetails] = useState('');
+  const [harassernumber, setHarasserNumber] = useState('');
   const [harassmentType, setHarassmentType] = useState('');
+  const [platname, setPlatName] = useState('');
+  const [details, setDetails] = useState('');
   const [evidence, setEvidence] = useState<FileList | null>(null);
 
-  useEffect(() => {
-    const storedEmployeeId = localStorage.getItem('employeeId');
-    if (storedEmployeeId) {
-      setEmployeeId(storedEmployeeId);
-    }
-  }, []);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // const uploadFile = async (file: File) => {
+  //   const formData = new FormData();
+  //   formData.append('file', file);
+  //   formData.append('upload_preset', 'your_upload_preset'); // Replace with your Cloudinary preset
+
+  //   try {
+  //     const res = await fetch(`https://api.cloudinary.com/v1_1/your_cloudinary_name/upload`, {
+  //       method: 'POST',
+  //       body: formData,
+  //     });
+
+  //     const data = await res.json();
+  //     return data.secure_url; // Get the uploaded file URL
+  //   } catch (error) {
+  //     console.error('Upload Error:', error);
+  //     return null;
+  //   }
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({
-      orgId,
-      employeeId,
-      harasserName,
+
+    // let uploadedFiles: string[] = [];
+
+    // if (evidence) {
+    //   const fileUploadPromises = Array.from(evidence).map(uploadFile);
+    //   uploadedFiles = (await Promise.all(fileUploadPromises)).filter(Boolean) as string[];
+    // }
+
+    const reportData = {
+      orgid,
+      harassername,
+      harrasserdetails,
+      harassernumber: harassernumber ? parseInt(harassernumber) : undefined,
+      type: harassmentType,
+      platname: harassmentType === "Online Threat" ? platname : undefined,
       details,
-      description,
-      harassmentType,
-      evidence,
-    });
+      // evidence: uploadedFiles,
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/report/createreport/${orgid}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reportData),
+      });
+
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Report Submitted!',
+          text: 'Your report has been submitted successfully.',
+          confirmButtonColor: '#d33',
+        }).then(() => {
+          router.push('/');
+        });
+      } else {
+        const errorData = await response.json();
+        Swal.fire({
+          icon: 'error',
+          title: 'Submission Failed!',
+          text: errorData.message || 'An error occurred. Please try again.',
+          confirmButtonColor: '#d33',
+        });
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while submitting your report. Please try again.',
+        confirmButtonColor: '#d33',
+      });
+    }
   };
 
   return (
@@ -41,28 +101,26 @@ const EmployeeReport = () => {
         </button>
 
         <div className="p-6">
-          <h1 className="text-xl font-normal mb-6 text-gray-500 hover:text-gray-600">Don't be scared, we got you.</h1>
+          <h1 className="text-xl font-normal mb-6 text-gray-500 hover:text-gray-600">
+            Don't be scared, we got you.
+          </h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="block text-sm text-gray-600">
-                Organization ID
-              </label>
+              <label className="block text-sm text-gray-600">Organization ID</label>
               <input
                 type="text"
-                value={orgId as string}
+                value={orgid as string}
                 readOnly
                 className="w-full px-3 py-2 border rounded-md bg-gray-50 text-gray-600"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm text-gray-600">
-                Harasser Name
-              </label>
+              <label className="block text-sm text-gray-600">Harasser Name</label>
               <input
                 type="text"
-                value={harasserName}
+                value={harassername}
                 onChange={(e) => setHarasserName(e.target.value)}
                 className="w-full px-3 py-2 border rounded-md text-gray-600"
                 placeholder="Enter name of harasser"
@@ -71,36 +129,30 @@ const EmployeeReport = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm text-gray-600">
-                Harassment Details
-              </label>
+              <label className="block text-sm text-gray-600">Department or Designation</label>
               <input
                 type="text"
-                value={details}
-                onChange={(e) => setDetails(e.target.value)}
+                value={harrasserdetails}
+                onChange={(e) => setHarrasserDetails(e.target.value)}
                 className="w-full px-3 py-2 border rounded-md text-gray-600"
-                placeholder="Enter details of harassment"
+                placeholder="Enter department or designation"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm text-gray-600">
-                Describe what happened to you
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md h-24 resize-none text-gray-600"
-                placeholder="Describe the incident in detail"
-                required
+              <label className="block text-sm text-gray-600">Harasser Contact Number (Optional)</label>
+              <input
+                type="text"
+                value={harassernumber}
+                onChange={(e) => setHarasserNumber(e.target.value)}
+                className="w-full px-3 py-2 border rounded-md text-gray-600"
+                placeholder="Enter harasser's contact number"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm text-gray-600">
-                Type of Harassment
-              </label>
+              <label className="block text-sm text-gray-600">Type of Harassment</label>
               <select
                 value={harassmentType}
                 onChange={(e) => setHarassmentType(e.target.value)}
@@ -108,40 +160,42 @@ const EmployeeReport = () => {
                 required
               >
                 <option value="">Select type</option>
-                <option value="online">Online</option>
-                <option value="threats">Threats</option>
-                <option value="verbal">Verbal</option>
-                <option value="physical">Physical</option>
-                <option value="other">Other</option>
+                <option value="Online Threat">Online Threat</option>
+                <option value="Sexual Abuse">Sexual Abuse</option>
+                <option value="Censored photograph">Censored photograph</option>
+                <option value="Private Video Leak">Private Video Leak</option>
               </select>
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-sm text-gray-600">
-                Evidence
-              </label>
-              <div className="border-2 border-dashed rounded-md p-6 text-center cursor-pointer hover:border-red-500 transition-colors">
+            {harassmentType === "Online Threat" && (
+              <div className="space-y-2">
+                <label className="block text-sm text-gray-600">Platform Name</label>
                 <input
-                  type="file"
-                  id="evidence"
-                  multiple
-                  onChange={(e) => setEvidence(e.target.files)}
-                  className="hidden"
+                  type="text"
+                  value={platname}
+                  onChange={(e) => setPlatName(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md text-gray-600"
+                  placeholder="Enter platform name (e.g., Facebook, Instagram)"
                 />
-                <label htmlFor="evidence" className="cursor-pointer">
-                  <Upload className="mx-auto text-red-500 mb-2" size={24} />
-                  <p className="text-sm text-gray-500">
-                    Upload image or video or audio as your evidence
-                  </p>
-                </label>
               </div>
+            )}
+
+            <div className="space-y-2">
+              <label className="block text-sm text-gray-600">Harassment Details</label>
+              <textarea
+                value={details}
+                onChange={(e) => setDetails(e.target.value)}
+                className="w-full px-3 py-2 border rounded-md h-24 resize-none text-gray-600"
+                placeholder="Describe the incident in detail"
+                required
+              />
             </div>
 
             <button
               type="submit"
               className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md transition-colors"
             >
-              Submit
+              Submit Report
             </button>
           </form>
         </div>
