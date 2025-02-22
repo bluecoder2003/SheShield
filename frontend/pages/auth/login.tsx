@@ -1,20 +1,53 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { X } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const Login = () => {
-  const [userType, setUserType] = useState('');
-  const [identifier, setIdentifier] = useState('');
+  const [organizationId, setOrganizationId] = useState('');
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (userType === 'employee') {
-      localStorage.setItem('employeeId', identifier);
-      router.push('/report/records-employee');
-    } else if (userType === 'organization') {
-      localStorage.setItem('organizationName', identifier);
-      router.push('/report/organization');
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: organizationId, role: 'org' }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('organizationId', organizationId);
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful!',
+          text: 'Redirecting...',
+          confirmButtonColor: '#d33',
+        }).then(() => {
+          router.push('/report/organization');
+        });
+      } else {
+        const errorData = await response.json();
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed!',
+          text: errorData.message || 'Invalid Organization ID. Please try again.',
+          confirmButtonColor: '#d33',
+        });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred. Please try again.',
+        confirmButtonColor: '#d33',
+      });
     }
   };
 
@@ -26,46 +59,19 @@ const Login = () => {
         </button>
 
         <div className="p-6">
-          <h1 className="text-xl font-normal mb-6 text-gray-500 hover:text-gray-600">Login to your account</h1>
+          <h1 className="text-xl font-normal mb-6 text-gray-500 hover:text-gray-600">
+            Organization Login
+          </h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="flex space-x-6 mb-6">
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  value="employee"
-                  checked={userType === 'employee'}
-                  onChange={(e) => setUserType(e.target.value)}
-                  className="w-4 h-4 text-red-500"
-                />
-                <span className="text-sm text-gray-600">Employee</span>
-              </label>
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  value="organization"
-                  checked={userType === 'organization'}
-                  onChange={(e) => setUserType(e.target.value)}
-                  className="w-4 h-4 text-red-500"
-                />
-                <span className="text-sm text-gray-600">Organization</span>
-              </label>
-            </div>
-
             <div className="space-y-2">
-              <label className="block text-sm text-gray-600">
-                {userType === 'employee' ? 'Employee ID' : 'Organization Name'}
-              </label>
+              <label className="block text-sm text-gray-600">Organization ID</label>
               <input
                 type="text"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
+                value={organizationId}
+                onChange={(e) => setOrganizationId(e.target.value)}
                 className="w-full px-3 py-2 border rounded-md text-gray-600"
-                placeholder={
-                  userType === 'employee'
-                    ? 'Enter your employee ID'
-                    : 'Enter your organization name'
-                }
+                placeholder="Enter your organization ID"
                 required
               />
             </div>
@@ -79,11 +85,8 @@ const Login = () => {
 
             <p className="text-center text-sm text-gray-500">
               Don't have an account?{' '}
-              <a
-                href="/auth/signup"
-                className="text-red-500 hover:text-red-600 font-medium"
-              >
-                Sign up
+              <a href="/auth/register" className="text-red-500 hover:text-red-600 font-medium">
+                Register here
               </a>
             </p>
           </form>

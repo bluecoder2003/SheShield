@@ -2,7 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/auth/signup": "pages/auth/signup.js",
-  "/auth/login": "pages/auth/login.js"
+  "/auth/login": "pages/auth/login.js",
+  "/report/listoforgs": "pages/report/listoforgs.js",
+  "/report/[id]": "pages/report/[id].js",
+  "/report/organization": "pages/report/organization.js"
 }

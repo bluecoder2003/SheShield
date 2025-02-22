@@ -251,3 +251,15 @@ export const deleteUser = async (req,res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+
+export const getAllOrganizations = async (req, res) => {
+  try {
+    const organizations = await User.find({ role: "org" }).select("-password");
+    res.status(200).json({ success: true, data: organizations });
+  } catch (error) {
+    console.error("Error fetching organizations:", error); // Log the error
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+

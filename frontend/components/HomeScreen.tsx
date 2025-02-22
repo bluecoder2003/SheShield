@@ -59,7 +59,7 @@ export default function LandingPage() {
           <Link href="/auth/signup">
             <button className="bg-white text-purple-700 px-4 py-2 rounded-lg font-semibold 
               hover:bg-purple-100 transition-colors">
-              Signup
+              Signup as an Organization
             </button>
           </Link>
             </div>

@@ -2,14 +2,15 @@ import Report from "../models/reportmodel.js";
 //  Create Report (User Only)
 export const createReport = async (req, res) => {
     try {
-        if (req.user.role !== "user") {
-            return res.status(403).json({ success: false, message: "Access denied" });
+        const { organizationId } = req.params; // Get organization ID from URL
+
+        if (!organizationId) {
+            return res.status(400).json({ success: false, message: "Organization ID is required" });
         }
 
         const report = await Report.create({ 
             ...req.body, 
-            userId: req.user.id, 
-            organizationName: req.user.organizationName // Add organization name
+            organizationId // Save the organization ID in the report
         });
 
         return res.status(201).json({ success: true, message: "Report submitted successfully", report });
@@ -18,6 +19,7 @@ export const createReport = async (req, res) => {
         return res.status(500).json({ success: false, message: error.message });
     }
 };
+
 
 export const deleteReport = async (req, res) => {
     try {
