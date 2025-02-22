@@ -1,11 +1,11 @@
 import express from "express";
-import { createReport, deleteReport, getReports } from "../controllers/report.js";
+import { createReport, deleteReport, getReports,uploadEvidence } from "../controllers/report.js";
 import { authorizeRoles } from "../middleware/authmiddleware.js";
 import { verifyToken } from "../middleware/authmiddleware.js";
 const router = express.Router();
 
 // User Routes
-router.post("/createreport/:organizationId", createReport); // done
+router.post("/createreport/:organizationId", uploadEvidence, createReport); // done
 // router.post("/deletereport/:id",verifyToken, authorizeRoles('user'), deleteReport); //
 
 // HR Routes

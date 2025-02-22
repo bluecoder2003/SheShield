@@ -1,24 +1,66 @@
 import Report from "../models/reportmodel.js";
-//  Create Report (User Only)
+import { v2 as cloudinary } from 'cloudinary';
+import multer from 'multer';
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Multer Storage Setup (Temporary Memory Storage)
+const storage = multer.memoryStorage();
+const upload = multer({ storage }).array('evidence'); // Accept multiple files
+
 export const createReport = async (req, res) => {
     try {
         const { organizationId } = req.params; // Get organization ID from URL
-
         if (!organizationId) {
             return res.status(400).json({ success: false, message: "Organization ID is required" });
         }
 
-        const report = await Report.create({ 
-            ...req.body, 
-            organizationId // Save the organization ID in the report
+        let uploadedFiles = [];
+
+        // Check if evidence files are uploaded
+        if (req.files && req.files.length > 0) {
+            const uploadPromises = req.files.map(async (file) => {
+                try {
+                    const result = await cloudinary.uploader.upload_stream(
+                        { resource_type: 'auto', folder: 'evidence_reports' }, // Folder in Cloudinary
+                        (error, result) => {
+                            if (error) {
+                                console.error('Cloudinary Upload Error:', error);
+                                return null;
+                            }
+                            return result.secure_url;
+                        }
+                    ).end(file.buffer); // Upload file buffer
+                    return result;
+                } catch (error) {
+                    console.error('Cloudinary Upload Failed:', error);
+                    return null;
+                }
+            });
+
+            uploadedFiles = (await Promise.all(uploadPromises)).filter(Boolean);
+        }
+
+        // Create Report in Database
+        const report = await Report.create({
+            ...req.body,
+            organizationId,
+            evidence: uploadedFiles, // Store Cloudinary URLs in DB
         });
 
         return res.status(201).json({ success: true, message: "Report submitted successfully", report });
 
     } catch (error) {
+        console.error('Report Submission Error:', error);
         return res.status(500).json({ success: false, message: error.message });
     }
 };
+
+// Middleware to handle file uploads
+export const uploadEvidence = upload;
 
 
 export const deleteReport = async (req, res) => {
@@ -51,8 +93,8 @@ export const getReports = async (req, res) => {
             return res.status(403).json({ success: false, message: "Access denied" });
         }
 
-        // Fetch only reports that belong to the logged-in organization's name
-        const reports = await Report.find({ organizationName: req.user.organizationName });
+        // Fetch reports based on the logged-in organization's ID
+        const reports = await Report.find({ orgid: req.user.orgid });
 
         return res.status(200).json({ success: true, reports });
 
@@ -60,4 +102,5 @@ export const getReports = async (req, res) => {
         return res.status(500).json({ success: false, message: error.message });
     }
 };
+
 

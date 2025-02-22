@@ -12,10 +12,7 @@ const ReportSchema = new Schema(
             require:true,
         },
         //for online threat
-        platname: {
-            type: String,
-            
-        },//for photo,video leak,online threat
+        
         harassername: {
             type: String,
             required: [true, "Please provide the harasser name"],
@@ -37,6 +34,10 @@ const ReportSchema = new Schema(
             enum: ['Online Threat','Sexual Abuse', 'Censored photograph','Private Video Leak'],//stalking ta ekhane add korte hobe
             required: true
         },
+        evidence:{
+            type: [String], // Must be an array of strings (URLs)
+            required: [true, "Evidence is required."],
+        }
 
     },
     {
@@ -45,3 +46,13 @@ const ReportSchema = new Schema(
 
 );
 export default mongoose.model("Report", ReportSchema); 
+// evidence:{
+//     type: [String], // Must be an array of strings (URLs)
+//     validate: {
+//         validator: function (value) {
+//             return Array.isArray(value) && value.length > 0; // Ensure at least one evidence file is provided
+//         },
+//         message: "At least one evidence file is required."
+//     },
+//     required: [true, "Evidence is required."],
+// }
