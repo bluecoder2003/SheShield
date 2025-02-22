@@ -4,6 +4,5 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/report/listoforgs": "pages/report/listoforgs.js",
-  "/report/[id]": "pages/report/[id].js",
-  "/auth/signup": "pages/auth/signup.js"
+  "/report/[id]": "pages/report/[id].js"
 }
