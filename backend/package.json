@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --watch index.js",
-    "prebuild": "rimraf dist",
-    "build": "npm install && npm run build"
+    "prebuild": "rm -rf dist",
+    "build": "mkdir dist && cp index.js dist/"
   },
   "keywords": [],
   "author": "",
