@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --watch index.js",
     "prebuild": "rm -rf dist",
-    "build": "mkdir dist && cp index.js dist/",
-    "postinstall": "npm install"
+    "build": "npm intsall"
+    
   },
   "keywords": [],
   "author": "",
