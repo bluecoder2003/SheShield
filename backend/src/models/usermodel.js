@@ -34,6 +34,7 @@ const AuthSchema = new Schema(
     organizationName: {
       type: String,
       required: true, // Required for all users (HR & employees)
+      unique:true,
     },
     department: {
       type: String,

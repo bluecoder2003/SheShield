@@ -6,6 +6,11 @@ const Schema = mongoose.Schema;
 const passwordSchema = z.string().min(6).regex(/(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])/);
 const ReportSchema = new Schema(
     {   
+        orgid:{
+            type:String,
+            unique:true,
+            require:true,
+        },
         //for online threat
         platname: {
             type: String,
