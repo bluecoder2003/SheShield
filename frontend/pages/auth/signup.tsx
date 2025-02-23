@@ -26,7 +26,7 @@ const Signup = () => {
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     try {
-      const response = await fetch(`${API_URL}/auth/register`, {
+      const response = await fetch(`${API_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, role: "org" }),
@@ -40,7 +40,7 @@ const Signup = () => {
           confirmButtonColor: "#d33",
         }).then((result) => {
           if (result.isConfirmed) {
-            router.push("/login");
+            router.push("/auth/login");
           }
         });
       } else {
@@ -66,12 +66,15 @@ const Signup = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg relative">
-        <button className="absolute right-4 top-4 text-textblack hover:text-gray-600">
+      <button
+          className="absolute right-4 top-4 text-textblack hover:text-gray-600"
+          onClick={() => router.push("/")}
+        >
           <X size={20} />
         </button>
 
         <div className="p-6">
-          <h1 className="text-2xl font-bold mb-6 text-textblack hover:text-gray-600 ">
+          <h1 className="text-2xl font-medium mb-6 text-gray-700 hover:text-gray-600 ">
             Organization Sign Up
           </h1>
 

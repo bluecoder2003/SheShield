@@ -56,11 +56,14 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg relative p-6">
-        <button className="absolute right-4 top-4 text-gray-400 hover:text-gray-600">
-          <X size={20} />
-        </button>
+        <button
+                  className="absolute right-4 top-4 text-textblack hover:text-gray-600"
+                  onClick={() => router.push("/")}
+                >
+                  <X size={20} />
+                </button>
 
-        <h1 className="text-xl font-semibold text-gray-700 text-center mb-6">
+        <h1 className="text-xl text-gray-700 hover:text-gray-600 text-center mb-6">
           Organization Login
         </h1>
 

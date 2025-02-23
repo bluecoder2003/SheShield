@@ -116,9 +116,12 @@ const EmployeeReport = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 relative">
-        <button className="absolute right-4 top-4 text-textblack hover:text-textblack">
-          <X size={20} />
-        </button>
+        <button
+                  className="absolute right-4 top-4 text-textblack hover:text-gray-600"
+                  onClick={() => router.push("/")}
+                >
+                  <X size={20} />
+                </button>
         <h1 className="text-xl font-normal mb-6 text-textblack hover:text-textblack">Don't be scared, we got you.</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <input type="text" value={orgid as string} readOnly className="w-full px-3 py-2 border rounded-md bg-gray-50 text-textblack" />
@@ -135,18 +138,24 @@ const EmployeeReport = () => {
           </select>
 
           <input type="text" placeholder="Harassment Details" value={details} onChange={(e) => setDetails(e.target.value)} className="w-full px-3 py-2 border rounded-md text-textblack" required />
-
+          <p className="text-gray-600">
+  Submit Evidence <span className="text-red-500">*</span>
+</p>
           {/* Separate Uploads */}
-          <div className="space-y-4">
-            <label className="block text-sm font-medium text-textblack">Upload Images</label>
-            <input type="file" accept="image/*" multiple onChange={(e) => handleFileChange(e, "image")} className="w-full px-3 py-2 border rounded-md text-textblack" />
-
-            <label className="block text-sm font-medium text-textblack">Upload Videos</label>
-            <input type="file" accept="video/*" multiple onChange={(e) => handleFileChange(e, "video")} className="w-full px-3 py-2 border rounded-md text-textblack" />
-
-            <label className="block text-sm font-medium text-textblack">Upload Audio</label>
-            <input type="file" accept="audio/*" multiple onChange={(e) => handleFileChange(e, "audio")} className="w-full px-3 py-2 border rounded-md text-textblack" />
-          </div>
+          <div className="grid grid-cols-1 gap-4">
+  <div className="relative">
+    <input type="file" accept="image/*" multiple onChange={(e) => handleFileChange(e, "image")} className="w-full px-3 py-2 border rounded-md text-textblack pl-10" />
+    <Image className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-red-600" size={20} />
+  </div>
+  <div className="relative">
+    <input type="file" accept="video/*" multiple onChange={(e) => handleFileChange(e, "video")} className="w-full px-3 py-2 border rounded-md text-textblack pl-10" />
+    <Video className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-red-600" size={20} />
+  </div>
+  <div className="relative">
+    <input type="file" accept="audio/*" multiple onChange={(e) => handleFileChange(e, "audio")} className="w-full px-3 py-2 border rounded-md text-textblack pl-10" />
+    <FileAudio className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-red-600" size={20} />
+  </div>
+</div>
 
           <button type="submit" className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md transition-colors">Submit Report</button>
         </form>
