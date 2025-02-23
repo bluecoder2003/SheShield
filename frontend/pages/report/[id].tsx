@@ -44,16 +44,20 @@ const EmployeeReport = () => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", UPLOAD_PRESET || "");
-
+  
     try {
       const res = await fetch(CLOUDINARY_UPLOAD_URL, {
         method: "POST",
         body: formData,
       });
-
+  
       const data = await res.json();
+      console.log("Cloudinary Response:", data);
+  
       if (!res.ok) throw new Error(data.error?.message || "Upload failed");
-      return data.secure_url;
+  
+      
+      return data.secure_url || data.url;
     } catch (error) {
       console.error("Upload Error:", error);
       return null;
@@ -86,9 +90,9 @@ const EmployeeReport = () => {
       harassernumber: harassernumber ? parseInt(harassernumber) : undefined,
       type: harassmentType,
       details,
-      evidence: uploadedFiles,
+      evidence: uploadedFiles.length > 0 ? uploadedFiles : undefined,
     };
-
+    console.log("Report Data Being Sent:", reportData);
     try {
       const response = await fetch(`${API_URL}/report/createreport/${orgid}`, {
         method: "POST",

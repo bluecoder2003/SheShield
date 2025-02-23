@@ -25,13 +25,15 @@ export const createReport = async (req, res) => {
             const uploadPromises = req.files.map(async (file) => {
                 try {
                     const result = await cloudinary.uploader.upload_stream(
-                        { resource_type: 'auto', folder: 'evidence_reports' }, // Folder in Cloudinary
+                        { resource_type: 'auto', folder: '' }, // Folder in Cloudinary
                         (error, result) => {
                             if (error) {
                                 console.error('Cloudinary Upload Error:', error);
                                 return null;
                             }
+                            console.log(result.secure_url);
                             return result.secure_url;
+                            
                         }
                     ).end(file.buffer); // Upload file buffer
                     return result;
@@ -48,9 +50,9 @@ export const createReport = async (req, res) => {
         const report = await Report.create({
             ...req.body,
             organizationId,
-            evidence: uploadedFiles, // Store Cloudinary URLs in DB
+            // Store Cloudinary URLs in DB
         });
-
+        // console.log(req.body);
         return res.status(201).json({ success: true, message: "Report submitted successfully", report });
 
     } catch (error) {
@@ -86,7 +88,7 @@ export const deleteReport = async (req, res) => {
     }
 };
 
-// ✅ Get Reports (HR Only)
+// Get Reports (HR Only)
 export const getReports = async (req, res) => {
     try {
         if (req.user.role !== "org") {
@@ -94,7 +96,7 @@ export const getReports = async (req, res) => {
         }
 
         // Fetch reports based on the logged-in organization's ID
-        const reports = await Report.find({ orgid: req.user.orgid });
+        const reports = await Report.find({ orgid: req.user._id });
 
         return res.status(200).json({ success: true, reports });
 

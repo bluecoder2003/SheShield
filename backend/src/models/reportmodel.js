@@ -8,7 +8,7 @@ const ReportSchema = new Schema(
     {   
         orgid:{
             type:String,
-            unique:true,
+            
             require:true,
         },
         //for online threat
@@ -35,9 +35,10 @@ const ReportSchema = new Schema(
             required: true
         },
         evidence:{
-            type: [String], // Must be an array of strings (URLs)
-            required: [true, "Evidence is required."],
-        }
+    type: [String], // Must be an array of strings (URLs)
+    
+    required: [true, "Evidence is required."],
+}
 
     },
     {

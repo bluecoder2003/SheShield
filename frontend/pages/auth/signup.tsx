@@ -40,7 +40,7 @@ const Signup = () => {
           confirmButtonColor: "#d33",
         }).then((result) => {
           if (result.isConfirmed) {
-            router.push("/report/organization");
+            router.push("/login");
           }
         });
       } else {

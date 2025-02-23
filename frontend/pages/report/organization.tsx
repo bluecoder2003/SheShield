@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 interface Report {
   id: string;
@@ -10,35 +11,23 @@ interface Report {
   evidence: string[];
 }
 
-const dummyReports: Report[] = [
-  {
-    id: '1',
-    employeeId: 'E123',
-    harasserName: 'John Doe',
-    details: 'Harassment in the workplace',
-    description: 'John Doe has been making inappropriate comments.',
-    harassmentType: 'Verbal',
-    evidence: ['photo1.jpg', 'audio1.mp3'],
-  },
-  {
-    id: '2',
-    employeeId: 'E456',
-    harasserName: 'Jane Smith',
-    details: 'Online harassment',
-    description: 'Jane Smith has been sending threatening emails.',
-    harassmentType: 'Online',
-    evidence: ['screenshot1.png', 'video1.mp4'],
-  },
-];
-
 const OrganizationReport: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+  const router = useRouter();
+  const { _id } = router.query;
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    // Simulate fetching data from an API
-    setReports(dummyReports);
-  }, []);
+    if (_id) {
+      fetch(`${API_URL}/report/getorgReport/${_id}`)
+        .then((res) => res.json())
+        .then((data) => setReports(data.reports || []))
+        .catch((error) => console.error('Error fetching reports:', error));
+        console.log("Stored Token:", localStorage.getItem("token"));
+
+    }
+  }, [_id]);
 
   const handleViewEvidence = (report: Report) => {
     setSelectedReport(report);
@@ -56,7 +45,7 @@ const OrganizationReport: React.FC = () => {
           <span className="text-gray-400">Protect.</span>
           <span className="text-red-500">Deliver Justice.</span>
         </h1>
-
+        
         {reports.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-gray-500">No reports available.</p>
@@ -77,7 +66,6 @@ const OrganizationReport: React.FC = () => {
                     View Evidence
                   </button>
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
@@ -96,22 +84,6 @@ const OrganizationReport: React.FC = () => {
                     </div>
                   </div>
                 </div>
-
-                {report.evidence.length > 0 && (
-                  <div className="mt-4 pt-4 border-t">
-                    <h3 className="text-sm text-gray-500 mb-2">Evidence:</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {report.evidence.map((item, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-600"
-                        >
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             ))}
           </div>

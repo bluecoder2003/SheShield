@@ -118,43 +118,45 @@ export const register = async (req, res) => {
 //     }
 // };
 export const login = async (req, res) => {
-    try {
-      const { id } = req.body;
-  
-      if (!id) {
-        console.log("Missing ID: ", id);
-        return res.status(400).json({ message: "ID is required" });
-      }
-  
-      const user = await User.findOne({ id });
-  
-      if (!user) {
-        console.log("User not found: ", id);
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-      console.log("User Found:", user);
-  
-      const token = jwt.sign(
-        { id: user.id, role: user.role,organizationName: user.organizationName },
-        process.env.JWT_SECRET,
-        { expiresIn: "1d" }
-      );
-  
-      res.setHeader("Authorization", `Bearer ${token}`);
-  
-      console.log("Login Successful:", user.id);
-      return res.status(200).json({
-        message: "User logged in successfully",
-        token,
-        user
-      });
-  
-    } catch (error) {
-      console.error("Error during login:", error);
-      return res.status(500).json({ message: error.message });
+  try {
+    const { id } = req.body;
+
+    if (!id) {
+      console.log("Missing ID: ", id);
+      return res.status(400).json({ message: "ID is required" });
     }
-  };
+
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      console.log("User not found: ", id);
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    console.log("User Found:", user);
+
+    const token = jwt.sign(
+      { id: user._id, role: user.role, organizationName: user.organizationName },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.setHeader("Authorization", `Bearer ${token}`);
+
+    console.log("Login Successful:", user._id);
+    return res.status(200).json({
+      message: "User logged in successfully",
+      token,
+      _id: user._id,  
+      user
+    });
+
+  } catch (error) {
+    console.error("Error during login:", error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 
 
 

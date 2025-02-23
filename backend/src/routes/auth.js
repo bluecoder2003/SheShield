@@ -9,13 +9,13 @@ import {
     deleteUser, 
     getAllOrganizations
 } from '../controllers/auth.js';
-import { authorizeRoles } from '../middleware/authmiddleware.js';
+import { authenticateUser,authorizeRoles } from '../middleware/authmiddleware.js';
 import { verifyToken } from '../middleware/authmiddleware.js';
 const router = Router();
 
 // Public Routes
 router.post('/register', register,authorizeRoles('admin','org')); //done
-router.post('/login', login);//done
+router.post('/login', authenticateUser,login);//done
 router.post('/logout', logout);//done
 
 // Protected Routes

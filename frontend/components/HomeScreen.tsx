@@ -1,231 +1,271 @@
-// types.ts
-type TestimonialType = {
-  quote: string;
-  author: string;
-  role: string;
-  image: string;
-};
+"use client";
+import {
+  Menu,
+  Instagram,
+  Twitter,
+  Facebook,
+} from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import AnimatedButton from "@/components/custom/AnimatedButton";
+import NewsCard from "@/components/custom/NewsCard";
+import LatestReportCard from "@/components/custom/LatestReportCard";
+import StatCard from "@/components/custom/StatCard";
+import SurvivorStory from "@/components/custom/SurvivorStory";
+import SafetyApp from "@/components/custom/SafetyApp";
 
-type InsightType = {
-  value: string;
-  label: string;
-  description: string;
-  link: string;
-};
-
-// page.tsx
-import Link from 'next/link';
-import Image from 'next/image';
-import { Play, ArrowUpRight } from 'lucide-react';
-
-export default function LandingPage() {
-  const metrics = [
-    { value: '4.9', label: 'Trusted' },
-    { value: '>5M', label: 'Total Revenue' },
-    { value: '1200+', label: 'Total Revenue' },
-  ];
-
-  const insights: InsightType[] = [
+const NewsSection = () => {
+  const stats = [
     {
-      value: '$2.5M',
-      label: 'Trusted',
-      description: 'Achieve greater efficiency and accuracy with a compensation solution designed to give you real-time data, insightful analytics.',
-      link: '/learn-more'
+      date: "August 27, 2021 - 10:48 am",
+      title: "300 Women Just Came Forward About Their Harassment in Tech",
+      description:
+        "This is the story that isn’t being told, but needs to be. Women are being harassed in the tech sector at an alarming rate, and it isn’t being reported...",
     },
     {
-      value: '$12.00',
-      label: 'Trusted',
-      description: 'Empower your HR team with a platform that simplifies compensation planning and ensures transparency across the board.',
-      link: '/learn-more'
-    }
+      date: "August 27, 2021 - 08:35 am",
+      title: "The Social-Media Stars Who Move Markets",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
+    },
+    {
+      date: "August 27, 2021 - 08:31 am",
+      title: "Supreme Court Blocks New Eviction Moratorium",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {stats.map((stat, index) => (
+        <NewsCard key={index} {...stat} />
+      ))}
+    </div>
+  );
+};
+
+export const formatDate = (date: Date) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options);
+};
+
+export default function LandingPage() {
+  const currentDate = formatDate(new Date());
+
+  return (
+    <div className="min-h-screen bg-[#FEFDF5]">
       {/* Navigation */}
-      <nav className="fixed w-full z-50 bg-black">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="text-xl font-semibold">sheshield</Link>
-            <div className="flex items-center space-x-8">
-              <span>06.04.23</span>
-              <span>London</span>
+      <nav className="border-b bg-white sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="text-sm text-gray-600">{currentDate}</div>
+            <div className="flex items-center gap-4">
+              <AnimatedButton
+                href="/auth/signup"
+                className="px-2 py-2 text-red-600 transition-colors group"
+              >
+                Join as an Organization
+              </AnimatedButton>
               <Link href="/report/listoforgs">
-            <button className="bg-white text-purple-700 px-4 py-2 rounded-lg font-semibold 
-              hover:bg-purple-100 transition-colors">
-              Report
-            </button>
-          </Link>
-          <Link href="/auth/signup">
-            <button className="bg-white text-purple-700 px-4 py-2 rounded-lg font-semibold 
-              hover:bg-purple-100 transition-colors">
-              Signup as an Organization
-            </button>
-          </Link>
+                <button className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors">
+                  Report
+                </button>
+              </Link>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20">
-        <div className="container mx-auto px-6">
-          <h1 className="text-7xl font-bold max-w-2xl mb-16">
-            Courage starts with a single report
+      <header className="bg-white flex flex-col min-h-screen border-b justify-center items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+          <img
+            src="/sheshield-logo.jpg"
+            className="w-48 h-auto mx-auto mb-8"
+          />
+          <h1 className="text-4xl md:text-6xl font-serif mb-16 text-[#222222]">
+            Courage starts with a{" "}
+            <AnimatedButton
+              href="/auth/signup"
+              className="px-2 py-2 text-red-600 transition-colors font-instrument-serif italic group"
+            >
+              report
+            </AnimatedButton>
           </h1>
 
-          <div className="grid grid-cols-2 gap-8">
-            <div className="relative">
-              <div className="absolute -top-4 -left-4 bg-black/90 p-4 z-10">
-                <h3 className="text-lg font-semibold mb-2">Compensation Planning</h3>
-                <div className="w-12 h-6 bg-white rounded-full"></div>
-              </div>
-              <div className="aspect-video bg-gray-800 rounded-lg overflow-hidden">
-                <Image 
-                  src="/api/placeholder/800/600"
-                  alt="Compensation Planning"
-                  width={800}
-                  height={600}
-                  className="object-cover"
-                />
-              </div>
-            </div>
-            <div>
-              <div className="bg-white/10 p-6 rounded-lg mb-4">
-                <p className="text-lg">"Transforming businesses with the power of the cloud, our SAAS"</p>
-                <div className="flex items-center mt-4">
-                  <span className="text-sm text-gray-400">Monthly</span>
-                  <span className="text-sm text-gray-400 ml-auto">Goned</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Content Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold mb-8">
-            Make data-driven decisions with real-time insights and ensure every reward aligns with your business objectives.
-          </h2>
-
-          {/* Metrics */}
-          <div className="flex justify-between items-center py-12 border-y border-white/10">
-            {metrics.map((metric, index) => (
-              <div key={index} className="text-center">
-                <h3 className="text-4xl font-bold mb-2">{metric.value}</h3>
-                <p className="text-gray-400">{metric.label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Feature Grid */}
-          <div className="grid grid-cols-2 gap-12 py-20">
-            <div>
-              <h2 className="text-4xl font-bold mb-8">
-                Make data-driven decisions with real-time insights
-              </h2>
-              <ul className="space-y-4 text-gray-400">
-                <li>Create Analytics Groups</li>
-                <li>Deep Compensation Integration</li>
-                <li>Results You Can Measure</li>
-                <li>Apply Best Practices</li>
-              </ul>
-            </div>
-            <div className="aspect-video bg-gray-800 rounded-lg overflow-hidden">
-              <Image 
-                src="/api/placeholder/800/600"
-                alt="Data-driven decisions"
-                width={800}
-                height={600}
-                className="object-cover"
+          <NewsSection />
+          <div className="flex flex-col md:flex-row gap-6 mt-20 justify-center items-center">
+            <div className="flex flex-col gap-6 w-full md:w-2/6">
+              <StatCard
+                number={63}
+                description="of women don't report abuse due to fear of retaliation"
               />
-              <button className="absolute bottom-4 right-4 bg-white text-black p-2 rounded-full">
-                <Play size={24} />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-12">Our Happy Customers Says</h2>
-          <div className="bg-white/10 p-8 rounded-lg">
-            <div className="flex items-start space-x-4">
-              <div className="flex-1">
-                <div className="flex mb-4">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span key={star} className="text-yellow-400">★</span>
-                  ))}
-                </div>
-                <p className="text-xl mb-4">
-                  "Being able to see and adjust compensation in real-time has made a huge difference. We feel confident that we're fair rewards."
-                </p>
-                <p className="text-gray-400">- Jenny Leichester</p>
-              </div>
-              <Image 
-                src="/api/placeholder/400/400"
-                alt="Testimonial"
-                width={400}
-                height={400}
-                className="rounded-lg"
+              <StatCard
+                number={48}
+                description="remain silent due to shame and societal pressure"
+              />
+              <StatCard
+                number={71}
+                description="wish they had reported their first incident of abuse"
               />
             </div>
+            <div className="flex flex-col gap-6 w-full md:w-4/6">
+              <LatestReportCard />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Survivor Stories Section */}
+      <section className="bg-white border-b transition-colors duration-500 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="flex justify-between items-center mb-8">
+            <p className="text-2xl md:text-5xl font-serif text-[#222222]">
+              Survivor
+              <AnimatedButton className="px-2 py-2 text-red-600 transition-colors font-instrument-serif italic group">
+                Stories
+              </AnimatedButton>
+            </p>
+            <button className="bg-red-600 text-white px-6 py-2 hover:bg-red-700 transition-colors">
+              Share Your Story
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-8">
+            <SurvivorStory
+              name="Breaking the Silence"
+              date="February 20, 2025"
+              excerpt="After years of domestic abuse, finding the courage to speak up changed everything..."
+              image="/story1.jpg"
+            />
+            <SurvivorStory
+              name="Finding Strength in Community"
+              date="February 18, 2025"
+              excerpt="When I shared my story, I discovered I wasn't alone. The support I received..."
+              image="/story2.jpg"
+            />
+            <SurvivorStory
+              name="A Journey to Healing"
+              date="February 15, 2025"
+              excerpt="Recovery isn't linear. Each day brings new challenges and victories..."
+              image="/story3.jpg"
+            />
+            <SurvivorStory
+              name="Voice of Change"
+              date="February 12, 2025"
+              excerpt="My report led to policy changes in workplace harassment protocols..."
+              image="/story4.jpg"
+            />
           </div>
         </div>
       </section>
 
-      {/* Insights Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-12">Our Insight and Blog</h2>
-          <div className="space-y-8">
-            {insights.map((insight, index) => (
-              <div key={index} className="flex items-center justify-between py-8 border-t border-white/10">
-                <div>
-                  <div className="flex items-baseline space-x-4 mb-2">
-                    <span className="text-2xl font-bold">{insight.value}</span>
-                    <span className="text-gray-400">{insight.label}</span>
-                  </div>
-                  <p className="text-gray-400 max-w-2xl">{insight.description}</p>
-                </div>
-                <Link href={insight.link} className="flex items-center">
-                  <span className="mr-2">GET DEAL</span>
-                  <ArrowUpRight size={20} />
-                </Link>
-              </div>
-            ))}
+      {/* Safety Apps Section */}
+      <section className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <p className="text-2xl md:text-5xl font-serif text-[#222222]">
+            Safety
+            <AnimatedButton className="px-2 py-2 text-red-600 transition-colors font-instrument-serif italic group">
+              Resources
+            </AnimatedButton>
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <SafetyApp
+              title="SafeWalk"
+              description="GPS tracking app that allows trusted contacts to monitor your journey in real-time."
+              link="#"
+            />
+            <SafetyApp
+              title="SupportCircle"
+              description="Connect with counselors and support groups anonymously, 24/7."
+              link="#"
+            />
+            <SafetyApp
+              title="LegalAid"
+              description="Free legal resources and guidance for survivors of abuse."
+              link="#"
+            />
+            <SafetyApp
+              title="SafeWalk"
+              description="GPS tracking app that allows trusted contacts to monitor your journey in real-time."
+              link="#"
+            />
+            <SafetyApp
+              title="SupportCircle"
+              description="Connect with counselors and support groups anonymously, 24/7."
+              link="#"
+            />
+            <SafetyApp
+              title="LegalAid"
+              description="Free legal resources and guidance for survivors of abuse."
+              link="#"
+            />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-white/10">
-        <div className="container mx-auto px-6">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4">
-              <Link href="/about">About</Link>
-              <Link href="/product">Product</Link>
-              <Link href="/contact">Contact</Link>
-              <Link href="/career">Career</Link>
+      <footer className="bg-white border-t">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="col-span-2">
+              <h3 className="text-lg font-serif mb-4">Emergency Contacts</h3>
+              <div className="text-3xl font-bold text-red-600 mb-2">
+                1-800-SAFE-NOW
+              </div>
+              <p className="text-sm text-gray-600">
+                24/7 Confidential Support Available
+              </p>
             </div>
-            <div className="flex items-center space-x-4">
-              <button className="bg-white text-black px-4 py-2 rounded-full">
-                Back To Top
-              </button>
-              <div className="flex space-x-2">
-                <span>•</span>
-                <span>•</span>
-                <span>•</span>
+
+            <div>
+              <h3 className="text-lg font-serif mb-4">Quick Links</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>
+                  <a href="#" className="hover:text-gray-900">
+                    Report Abuse
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900">
+                    Find Support
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900">
+                    Legal Resources
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900">
+                    Safety Tips
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-serif mb-4">Follow Us</h3>
+              <div className="flex space-x-4">
+                <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <Twitter className="h-6 w-6" />
+                </a>
+                <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <Instagram className="h-6 w-6" />
+                </a>
+                <a href="#" className="text-gray-600 hover:text-gray-900">
+                  <Facebook className="h-6 w-6" />
+                </a>
               </div>
             </div>
           </div>
-          <p className="text-center text-gray-400 mt-8">
-            © {new Date().getFullYear()} All RIGHTS RESERVED • TERMS & CONDITIONS • PRIVACY POLICY
-          </p>
         </div>
       </footer>
     </div>

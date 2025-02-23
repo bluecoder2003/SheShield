@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { X } from 'lucide-react';
 
 type OrganizationType = {
   _id: string;
@@ -16,6 +17,7 @@ type OrganizationType = {
 
 const ListOfOrgs = () => {
   const [organizations, setOrganizations] = useState<OrganizationType[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,7 +56,6 @@ const ListOfOrgs = () => {
 
     fetchOrganizations();
   }, []);
-  
 
   if (loading) {
     return <p className="text-center text-lg">Loading organizations...</p>;
@@ -64,25 +65,44 @@ const ListOfOrgs = () => {
     return <p className="text-center text-red-500">{error}</p>;
   }
 
-  return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="container mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-textcolor">List of Organizations</h1>
+  const filteredOrganizations = organizations.filter((org) =>
+    org.organizationName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {organizations.map((org) => (
-            <div key={org._id} className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-xl font-semibold mb-2 text-textblack">{org.organizationName}</h2>
-              <p className="text-textblack">Name:{org.name}</p>
-              <p className="text-textblack">Department: {org.department}</p>
-              <p className="text-textblack">Designation: {org.desg}</p>
-              <p className="text-textblack">Office Phone: {org.officephoneno}</p>
-              <p className="text-textblack">Address: {org.officeAddress}</p>
-              <Link href={`/report/${org._id}`} className="text-blue-500 hover:underline mt-2 inline-block">
-                File Report
-              </Link>
-            </div>
-          ))}
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-lg relative">
+        <button className="absolute right-4 top-4 text-gray-400 hover:text-gray-600">
+          <X size={20} />
+        </button>
+
+        <div className="p-6">
+          <h1 className="text-xl font-normal mb-6 text-gray-500 hover:text-gray-600">List of Organizations</h1>
+
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Search organizations..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md text-gray-600"
+            />
+          </div>
+
+          <div className="space-y-6 h-96 overflow-y-auto">
+            {filteredOrganizations.map((org) => (
+              <div key={org._id} className="bg-gray-50 p-4 rounded-lg shadow-md">
+                <h2 className="text-lg font-medium mb-2 text-gray-700">{org.organizationName}</h2>
+                <p className="text-textblack">Department: {org.department}</p>
+                <p className="text-textblack">Designation: {org.desg}</p>
+                <p className="text-textblack">Office Phone: {org.officephoneno}</p>
+                <p className="text-textblack">Address: {org.officeAddress}</p>
+                <Link href={`/report/${org._id}`} className="flex justify-center w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md transition-colors mt-2">
+                  File Report
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
