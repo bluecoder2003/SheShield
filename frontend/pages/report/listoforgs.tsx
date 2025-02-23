@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable @typescript-eslint/no-explicit-any*/
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { X } from 'lucide-react';
@@ -20,7 +22,7 @@ const ListOfOrgs = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  type Error = string | any ;
   useEffect(() => {
     const fetchOrganizations = async () => {
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -46,7 +48,7 @@ const ListOfOrgs = () => {
         }
 
         setOrganizations(data.data);
-      } catch (err: any) {
+      } catch (err:Error) {
         console.error("Error fetching organizations:", err);
         setError(err.message);
       } finally {

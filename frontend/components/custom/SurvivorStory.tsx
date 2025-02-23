@@ -1,6 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import AnimatedButton from "@/components/custom/AnimatedButton";
-
+import Image from "next/image";
 interface SurvivorStoryProps {
   name: string;
   date: string;
@@ -12,8 +12,10 @@ const SurvivorStory = ({ name, date, excerpt, image }: SurvivorStoryProps) => (
   <div className="border-b border-gray-200 py-6">
     <div className="text-sm text-gray-600 mb-2">{date}</div>
     <h3 className="text-xl text-gray-600 font-serif mb-2">{name}</h3>
-    <img
+    <Image
       src={image}
+      width={500}
+      height={500}
       alt={name}
       className="w-full h-auto mb-4 transition-all duration-300 filter grayscale hover:grayscale-0"
     />

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import { X } from 'lucide-react';
-import Swal from 'sweetalert2';
 import { useAuth } from '@/Context/Authcontext';
 
 const Login = () => {
   const { login } = useAuth();
   const [organizationId, setOrganizationId] = useState('');
-  const router = useRouter();
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +46,7 @@ const Login = () => {
           </button>
 
           <p className="text-center text-sm text-gray-500">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <a href="/auth/register" className="text-red-500 hover:text-red-600 font-medium">
               Register here
             </a>

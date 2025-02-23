@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
+import Image from "next/image";
 interface Report {
   id: string;
   employeeId: string;
@@ -22,7 +22,7 @@ const OrganizationReport: React.FC = () => {
     if (id) {
       const token = localStorage.getItem("token"); // Retrieve the token
       if (!token) {
-        console.error("❌ No auth token found, user may not be logged in.");
+        console.error(" No auth token found, user may not be logged in.");
         return;
       }
   
@@ -48,7 +48,7 @@ const OrganizationReport: React.FC = () => {
           setReports(data.reports || []);
         })
         .catch((error) => {
-          console.error("❌ Error fetching reports:", error);
+          console.error(" Error fetching reports:", error);
         });
     }
   }, [id]);
@@ -126,12 +126,15 @@ const OrganizationReport: React.FC = () => {
                 const fileExtension = item.split(".").pop();
                 if (fileExtension === "jpg" || fileExtension === "png") {
                   return (
-                    <img
-                      key={index}
+                    <div key={index}>
+                    <Image
+                      width={500}
+                      height={500}
                       src={item}
                       alt={`Evidence ${index + 1}`}
                       className="w-full h-auto"
                     />
+                    </div>
                   );
                 } else if (fileExtension === "mp3") {
                   return (

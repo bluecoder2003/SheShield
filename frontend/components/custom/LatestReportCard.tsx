@@ -1,10 +1,13 @@
 import { ChevronRight } from "lucide-react";
-
+import Image from "next/image";
 const LatestReportCard = () => (
   <div className="flex items-center justify-center flex-col bg-white p-6 border border-gray-200 rounded-lg shadow-sm">
     <h3 className="text-2xl font-serif mb-4 text-gray-600">Latest Report on Women in the Private Sector</h3>
-    <img
+    <Image
       src="/story1.jpg"
+      width={400}
+      height={400} 
+      alt=""     
       className="w-full h-auto mb-4 transition-all duration-300 filter grayscale hover:grayscale-0"
     />
     <p className="text-gray-700 text-sm leading-relaxed mb-4">

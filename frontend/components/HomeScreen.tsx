@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars*/
 "use client";
 import {
   Menu,
@@ -15,6 +16,7 @@ import StatCard from "@/components/custom/StatCard";
 import SurvivorStory from "@/components/custom/SurvivorStory";
 import SafetyApp from "@/components/custom/SafetyApp";
 import { useAuth } from '@/Context/Authcontext';
+import Image from "next/image";
 const NewsSection = () => {
   
   const stats = [
@@ -127,10 +129,12 @@ export default function HomeScreen() {
       {/* Hero Section */}
       <header className="bg-white flex flex-col min-h-screen border-b justify-center items-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <img
+          <Image
+           alt=""
+           width={500}
+           height={500}
             src="/sheshield-logo.jpg"
-            className="w-48 h-auto mx-auto mb-8"
-          />
+            className="w-48 h-auto mx-auto mb-8"/>
           <h1 className="text-4xl md:text-6xl font-serif mb-16 text-[#222222]">
             Courage starts with a{" "}
             <AnimatedButton

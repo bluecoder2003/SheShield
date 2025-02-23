@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars*/
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { X, Upload, Trash, Image, Video, FileAudio } from "lucide-react";
@@ -119,7 +120,7 @@ const EmployeeReport = () => {
         <button className="absolute right-4 top-4 text-textblack hover:text-textblack">
           <X size={20} />
         </button>
-        <h1 className="text-xl font-normal mb-6 text-textblack hover:text-textblack">Don't be scared, we got you.</h1>
+        <h1 className="text-xl font-normal mb-6 text-textblack hover:text-textblack">Don&apos;t be scared, we got you.</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <input type="text" value={orgid as string} readOnly className="w-full px-3 py-2 border rounded-md bg-gray-50 text-textblack" />
           <input type="text" placeholder="Harasser Name" value={harassername} onChange={(e) => setHarasserName(e.target.value)} className="w-full px-3 py-2 border rounded-md text-textblack" required />

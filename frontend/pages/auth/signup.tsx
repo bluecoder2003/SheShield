@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { X } from "lucide-react";
-import Swal from "sweetalert2";
 import { useAuth } from '@/Context/Authcontext';
 const Signup = () => {
   const {register} = useAuth();
@@ -11,7 +10,7 @@ const Signup = () => {
   const [department, setDepartment] = useState('');
   const [desg, setDesg] = useState('');
   const [officeAddress, setOfficeAddress] = useState('');
-  const [role, setRole] = useState('org');
+  const role='org';
   
 
   const router = useRouter();
