@@ -105,7 +105,7 @@ export default function LandingPage() {
               report
             </AnimatedButton>
           </h1>
-          <div className="flex flex-row gap-0 md:gap-2">
+          <div className="flex flex-row gap-0 md:gap-2 px-4">
           <Quote className="text-red-600 transform scale-x-[-1] size-4" />
           <p className="px-2 py-2 text-red-600 transition-colors font-instrument-serif italic group">Report anonymously. Break the silence, not your privacy.</p>
           <Quote className="text-red-600 size-4" />
