@@ -40,38 +40,8 @@ app.use(cookieParser(process.env.COOKIE_SECRET, {
   secure: true
 }));
 
-app.post("/test-password", async (req, res) => {
-  try {
-      const { password } = req.body;
 
-      // Stored hash from your database
-      const storedHash = "$2b$10$hkn9A01Ai6Oihaa6BKKutezstQthdmQ0s//GR836u/8w/4wSShtKC";
 
-      console.log("Entered Password:", password);
-      console.log("Stored Hash:", storedHash);
-
-      // Hash the entered password to see if it matches
-      const newHash = await bcrypt.hash(password, 10);
-      console.log("New Hash (for debugging):", newHash);
-
-      const isMatch = await bcrypt.compare(password, storedHash);
-      console.log("Password Match Result:", isMatch);
-
-      return res.json({
-          success: isMatch,
-          message: isMatch ? "Password matched!" : "Invalid credentials",
-          debug: {
-              enteredPassword: password,
-              storedHash,
-              newHash, // For debugging
-              passwordMatch: isMatch,
-          }
-      });
-
-  } catch (error) {
-      return res.status(500).json({ success: false, message: error.message });
-  }
-});
 
 
 app.use('/', routes);
@@ -84,7 +54,10 @@ app.all('*', (req, res) => {
     error: 404
   });
 });
-
+app.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.url}`);
+  next();
+});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);

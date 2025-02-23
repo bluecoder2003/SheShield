@@ -9,14 +9,14 @@ import {
     deleteUser, 
     getAllOrganizations
 } from '../controllers/auth.js';
-import { authenticateUser,authorizeRoles } from '../middleware/authmiddleware.js';
+import { authorizeRoles } from '../middleware/authmiddleware.js';
 import { verifyToken } from '../middleware/authmiddleware.js';
 const router = Router();
 
 // Public Routes
-router.post('/register', register,authorizeRoles('admin','org')); //done
-router.post('/login', authenticateUser,login);//done
-router.post('/logout', logout);//done
+router.post('/register',register); //done
+router.post('/login',login);//done
+router.get('/logout', logout);//done
 
 // Protected Routes
 router.get('/users/:_id',verifyToken,authorizeRoles('admin'), getUser); // Admin can get any user//done

@@ -2,18 +2,20 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 interface AnimatedButtonProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   href?: string;
   className?: string;
+  onClick?: () => void;
 }
 
-const AnimatedButton: React.FC<AnimatedButtonProps> = ({ children, href, className }) => {
+const AnimatedButton: React.FC<AnimatedButtonProps> = ({ children, href, className, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const commonProps = {
     className: `relative ${className}`,
     onMouseEnter: () => setIsHovered(true),
     onMouseLeave: () => setIsHovered(false),
+    onClick,
   };
 
   return href ? (

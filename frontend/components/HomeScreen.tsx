@@ -14,8 +14,9 @@ import LatestReportCard from "@/components/custom/LatestReportCard";
 import StatCard from "@/components/custom/StatCard";
 import SurvivorStory from "@/components/custom/SurvivorStory";
 import SafetyApp from "@/components/custom/SafetyApp";
-
+import { useAuth } from '@/Context/Authcontext';
 const NewsSection = () => {
+  
   const stats = [
     {
       date: "August 27, 2021 - 10:48 am",
@@ -55,9 +56,18 @@ export const formatDate = (date: Date) => {
   return date.toLocaleDateString("en-US", options);
 };
 
-export default function LandingPage() {
+export default function HomeScreen() {
+  const _id = localStorage.getItem('_id');
   const currentDate = formatDate(new Date());
-
+  const { isAuthenticated, user, logout } = useAuth();
+  const [greeting, setGreeting] = useState('');
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setGreeting(`Hey, ${user.organizationName}!`);
+    } else {
+      setGreeting('Hey, user!');
+    }
+  }, [isAuthenticated, user]);
   return (
     <div className="min-h-screen bg-[#FEFDF5]">
       {/* Navigation */}
@@ -66,18 +76,39 @@ export default function LandingPage() {
           <div className="flex justify-between items-center h-16">
             <div className="text-sm text-gray-600">{currentDate}</div>
             <div className="flex items-center gap-4">
-              <AnimatedButton
-                href="/auth/signup"
-                className="px-2 py-2 text-red-600 transition-colors group"
-              >
-                Join as an Organization
-              </AnimatedButton>
-              <Link href="/report/listoforgs">
+             {isAuthenticated ? (
+          <>
+            <span className='pt-1 text-textcolor'>{greeting}</span>
+            <button onClick={logout} className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors">
+            Logout
+            </button>
+
+          </>
+        ) : (
+          <AnimatedButton
+          href="/auth/signup"
+          className="px-2 py-2 text-red-600 transition-colors group"
+        >
+          Join as an Organization
+        </AnimatedButton>
+        )}
+        
+        {isAuthenticated ? (
+          <AnimatedButton
+          href={`/report/getorgReport/${_id}`}
+          className="px-2 py-2 text-red-600 transition-colors group">
+            Show Reports
+          </AnimatedButton>
+          
+        ):(
+          <Link href="/report/listoforgs">
                 <button className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors">
                   Report
                 </button>
               </Link>
-            </div>
+        )
+      }
+      </div>
           </div>
         </div>
       </nav>

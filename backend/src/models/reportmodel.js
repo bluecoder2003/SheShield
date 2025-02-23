@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {z} from 'zod';
 const Schema = mongoose.Schema;
-const passwordSchema = z.string().min(6).regex(/(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])/);
+
 const ReportSchema = new Schema(
     {   
         orgid:{

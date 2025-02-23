@@ -2,55 +2,16 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { X } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { useAuth } from '@/Context/Authcontext';
 
 const Login = () => {
+  const { login } = useAuth();
   const [organizationId, setOrganizationId] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: organizationId, role: 'org' }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('organizationId', organizationId);
-        localStorage.setItem('_id', data._id); // Store _id in localStorage
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Login Successful!',
-          text: 'Redirecting...',
-          confirmButtonColor: '#d33',
-        }).then(() => {
-          router.push(`/report/organization?_id=${data._id}`); // Pass _id in URL
-        });
-      } else {
-        const errorData = await response.json();
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed!',
-          text: errorData.message || 'Invalid Organization ID. Please try again.',
-          confirmButtonColor: '#d33',
-        });
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'An error occurred. Please try again.',
-        confirmButtonColor: '#d33',
-      });
-    }
+    await login(organizationId);
   };
 
   return (

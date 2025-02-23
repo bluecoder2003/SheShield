@@ -15,7 +15,7 @@ const OrganizationReport: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const router = useRouter();
-  const { _id } = router.query;
+  const _id = localStorage.getItem('_id');
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {

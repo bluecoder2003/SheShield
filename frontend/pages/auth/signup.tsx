@@ -2,66 +2,26 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { X } from "lucide-react";
 import Swal from "sweetalert2";
-
+import { useAuth } from '@/Context/Authcontext';
 const Signup = () => {
-  const [formData, setFormData] = useState({
-    id: "",
-    password: "",
-    name: "",
-    officephoneno: "",
-    organizationName: "",
-    department: "",
-    desg: "",
-    officeAddress: "",
-  });
+  const {register} = useAuth();
+  const [id, setId] = useState('');
+  const [officePhoneNo, setOfficePhoneNo] = useState('');
+  const [organizationName, setOrganizationName] = useState('');
+  const [department, setDepartment] = useState('');
+  const [desg, setDesg] = useState('');
+  const [officeAddress, setOfficeAddress] = useState('');
+  const [role, setRole] = useState('org');
+  
 
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-    try {
-      const response = await fetch(`${API_URL}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, role: "org" }),
-      });
-
-      if (response.ok) {
-        Swal.fire({
-          icon: "success",
-          title: "Signup Successful!",
-          text: "Your account has been created successfully.",
-          confirmButtonColor: "#d33",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            router.push("/login");
-          }
-        });
-      } else {
-        const errorData = await response.json();
-        Swal.fire({
-          icon: "error",
-          title: "Signup Failed!",
-          text: errorData.message || "Something went wrong. Please try again.",
-          confirmButtonColor: "#d33",
-        });
-      }
-    } catch (error) {
-      console.error("Signup error:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "An error occurred. Please try again.",
-        confirmButtonColor: "#d33",
-      });
-    }
+    await register(id, officePhoneNo, organizationName, department, desg, officeAddress, role);
   };
+
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -79,38 +39,22 @@ const Signup = () => {
             <input
               type="text"
               name="id"
-              value={formData.id}
-              onChange={handleChange}
+              value={id}
+              onChange={(e) => setId(e.target.value)}
               required
               className="w-full px-3 py-2 border rounded-md text-textblack"
               placeholder="Enter Organization ID"
             />
 
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border rounded-md text-textblack"
-              placeholder="Enter Password"
-            />
+            
 
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border rounded-md text-textblack"
-              placeholder="Enter Your Name"
-            />
+            
 
             <input
               type="text"
               name="officephoneno"
-              value={formData.officephoneno}
-              onChange={handleChange}
+              value={officePhoneNo}
+              onChange={(e) => setOfficePhoneNo(e.target.value)}
               required
               className="w-full px-3 py-2 border rounded-md text-textblack"
               placeholder="Enter Office Phone Number"
@@ -119,8 +63,8 @@ const Signup = () => {
             <input
               type="text"
               name="organizationName"
-              value={formData.organizationName}
-              onChange={handleChange}
+              value={organizationName}
+              onChange={(e)=>setOrganizationName(e.target.value)}
               required
               className="w-full px-3 py-2 border rounded-md text-textblack"
               placeholder="Enter Organization Name"
@@ -129,8 +73,8 @@ const Signup = () => {
             <input
               type="text"
               name="department"
-              value={formData.department}
-              onChange={handleChange}
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
               required
               className="w-full px-3 py-2 border rounded-md text-textblack"
               placeholder="Enter Department"
@@ -139,8 +83,8 @@ const Signup = () => {
             <input
               type="text"
               name="desg"
-              value={formData.desg}
-              onChange={handleChange}
+              value={desg}
+              onChange={(e) => setDesg(e.target.value)}
               required
               className="w-full px-3 py-2 border rounded-md text-textblack"
               placeholder="Enter Designation"
@@ -148,8 +92,8 @@ const Signup = () => {
 
             <textarea
               name="officeAddress"
-              value={formData.officeAddress}
-              onChange={handleChange}
+              value={officeAddress}
+              onChange={(e)=>setOfficeAddress(e.target.value)}
               className="w-full px-3 py-2 border rounded-md h-24 resize-none text-textblack"
               placeholder="Enter Office Address"
             />
