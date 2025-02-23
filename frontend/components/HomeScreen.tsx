@@ -57,10 +57,20 @@ export const formatDate = (date: Date) => {
 };
 
 export default function HomeScreen() {
-  const _id = localStorage.getItem('_id');
+ 
   const currentDate = formatDate(new Date());
   const { isAuthenticated, user, logout } = useAuth();
   const [greeting, setGreeting] = useState('');
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedId = localStorage.getItem('_id');
+      console.log("Retrieved ID from localStorage:", storedId);
+      setUserId(storedId);
+    }
+  }, []);
+  
   useEffect(() => {
     if (isAuthenticated && user) {
       setGreeting(`Hey, ${user.organizationName}!`);
@@ -95,7 +105,8 @@ export default function HomeScreen() {
         
         {isAuthenticated ? (
           <AnimatedButton
-          href={`/report/getorgReport/${_id}`}
+          href={userId ? `/report/getorgReport/${userId}` : "#"}
+
           className="px-2 py-2 text-red-600 transition-colors group">
             Show Reports
           </AnimatedButton>

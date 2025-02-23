@@ -89,26 +89,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         body: JSON.stringify({ id }),
         credentials: 'include', // Allow sending cookies
       });
-
+  
       if (res.ok) {
         const data = await res.json();
-
-        // Ensure we're on the client side before using localStorage
+  
         if (typeof window !== "undefined") {
           localStorage.setItem('token', data.token);
           localStorage.setItem('id', data.user._id);
           localStorage.setItem('role', data.user.role);
           localStorage.setItem('user', JSON.stringify(data.user));
         }
-
+  
         setIsAuthenticated(true);
         setUser(data.user);
-
+  
         Swal.fire({
           icon: 'success',
           title: 'Login successful!',
         }).then(() => {
-          router.push('/');
+          router.push(`/report/getorgReport/${data.user._id}`); // Redirect to the organization report page
         });
       } else {
         const data = await res.json();
@@ -125,7 +124,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         text: 'An error occurred during login.',
       });
     }
-};
+  };
+  
+  
+  
+
 
 
 

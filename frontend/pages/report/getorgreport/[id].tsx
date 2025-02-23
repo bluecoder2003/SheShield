@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 interface Report {
   id: string;
@@ -15,19 +15,44 @@ const OrganizationReport: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const router = useRouter();
-  const _id = localStorage.getItem('_id');
+  const { id } = router.query; // Extract ID from URL
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    if (_id) {
-      fetch(`${API_URL}/report/getorgReport/${_id}`)
-        .then((res) => res.json())
-        .then((data) => setReports(data.reports || []))
-        .catch((error) => console.error('Error fetching reports:', error));
-        console.log("Stored Token:", localStorage.getItem("token"));
-
+    if (id) {
+      const token = localStorage.getItem("token"); // Retrieve the token
+      if (!token) {
+        console.error("❌ No auth token found, user may not be logged in.");
+        return;
+      }
+  
+      fetch(`${API_URL}/report/getorgReport/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Send token in Authorization header
+        },
+      })
+        .then(async (res) => {
+          console.log("🔄 Fetching reports...");
+  
+          if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(`❌ HTTP ${res.status} - ${errorData.message || "Unknown error"}`);
+          }
+  
+          return res.json();
+        })
+        .then((data) => {
+          console.log("✅ Reports fetched:", data);
+          setReports(data.reports || []);
+        })
+        .catch((error) => {
+          console.error("❌ Error fetching reports:", error);
+        });
     }
-  }, [_id]);
+  }, [id]);
+  
 
   const handleViewEvidence = (report: Report) => {
     setSelectedReport(report);
@@ -45,7 +70,7 @@ const OrganizationReport: React.FC = () => {
           <span className="text-gray-400">Protect.</span>
           <span className="text-red-500">Deliver Justice.</span>
         </h1>
-        
+
         {reports.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-gray-500">No reports available.</p>
@@ -93,18 +118,33 @@ const OrganizationReport: React.FC = () => {
       {selectedReport && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full">
-            <h2 className="text-xl font-semibold mb-4">Evidence for Report #{selectedReport.id}</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              Evidence for Report #{selectedReport.id}
+            </h2>
             <div className="space-y-4">
               {selectedReport.evidence.map((item, index) => {
-                const fileExtension = item.split('.').pop();
-                if (fileExtension === 'jpg' || fileExtension === 'png') {
-                  return <img key={index} src={item} alt={`Evidence ${index + 1}`} className="w-full h-auto" />;
-                } else if (fileExtension === 'mp3') {
-                  return <audio key={index} controls src={item} className="w-full" />;
-                } else if (fileExtension === 'mp4') {
-                  return <video key={index} controls src={item} className="w-full" />;
+                const fileExtension = item.split(".").pop();
+                if (fileExtension === "jpg" || fileExtension === "png") {
+                  return (
+                    <img
+                      key={index}
+                      src={item}
+                      alt={`Evidence ${index + 1}`}
+                      className="w-full h-auto"
+                    />
+                  );
+                } else if (fileExtension === "mp3") {
+                  return (
+                    <audio key={index} controls src={item} className="w-full" />
+                  );
+                } else if (fileExtension === "mp4") {
+                  return (
+                    <video key={index} controls src={item} className="w-full" />
+                  );
                 } else {
-                  return <p key={index} className="text-gray-700">{item}</p>;
+                  return (
+                    <p key={index} className="text-gray-700">{item}</p>
+                  );
                 }
               })}
             </div>

@@ -7,9 +7,10 @@ import {
     getUser, 
     getOrgUser,  
     deleteUser, 
-    getAllOrganizations
+    getAllOrganizations,
+    
 } from '../controllers/auth.js';
-import { authorizeRoles } from '../middleware/authmiddleware.js';
+import { authenticateUser, authorizeRoles } from '../middleware/authmiddleware.js';
 import { verifyToken } from '../middleware/authmiddleware.js';
 const router = Router();
 
@@ -23,4 +24,5 @@ router.get('/users/:_id',verifyToken,authorizeRoles('admin'), getUser); // Admin
 router.get('/orgusers',verifyToken,authorizeRoles('org'), getOrgUser); // HR can get employees under their org//done
 router.delete('/users/:id',authorizeRoles('admin'), deleteUser); //
 router.get('/getorg',getAllOrganizations);
+
 export default router;

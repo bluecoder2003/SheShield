@@ -91,18 +91,31 @@ export const deleteReport = async (req, res) => {
 // Get Reports (HR Only)
 export const getReports = async (req, res) => {
     try {
-        if (req.user.role !== "org") {
+        console.log("🔹 Incoming Request - User:", req.user); 
+
+        if (!req.user || req.user.role !== "org") {
+            console.error("Access Denied - User is not an org or missing");
             return res.status(403).json({ success: false, message: "Access denied" });
         }
 
-        // Fetch reports based on the logged-in organization's ID
-        const reports = await Report.find({ orgid: req.user._id });
+        console.log("Fetching Reports for orgid:", req.user.id);
+        
+        const reports = await Report.find({ orgid: req.user.id });
+
+        if (reports.length === 0) {
+            console.warn(" No reports found for orgid:", req.user.orgid);
+        }
+
+        
 
         return res.status(200).json({ success: true, reports });
 
     } catch (error) {
+        
         return res.status(500).json({ success: false, message: error.message });
     }
 };
+
+
 
 
