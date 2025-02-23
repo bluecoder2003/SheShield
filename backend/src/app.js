@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 
 // Array of allowed origins
-const allowedOrigins = ['http://localhost:3000','http://localhost:5000'];
+const allowedOrigins = ['http://localhost:3000','http://localhost:5000','https://she-shield-r5c8.vercel.app/'];
 
 const corsOptions = {
   origin: function (origin, callback) {
