@@ -29,9 +29,9 @@ Workplace sexual harassment often goes unreported due to fear of retaliation and
   - Cloudinary (File Storage)
 
 ### 📱 Screenshots
-![Dashboard View](/screenshots/dashboard.png)
-![Report Form](/screenshots/report-form.png)
-![Analytics Dashboard](/screenshots/analytics.png)
+![Dashboard View](https://3grexzrja9.ufs.sh/f/MMsCe9NafJ9RogwGfDrFWSGunBJZzcldv4LjQ5mUw290Yy8x)
+![Evidence section](https://3grexzrja9.ufs.sh/f/MMsCe9NafJ9RrzTpZrFDxFRJzTv70h6pntUCmQ3eaZ9bdclN)
+
 
 ### 🎨 Design
 Check out our detailed UI/UX design:
