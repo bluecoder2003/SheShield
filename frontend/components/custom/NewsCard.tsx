@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 
 interface NewsCardProps {
@@ -8,7 +9,12 @@ interface NewsCardProps {
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({ date, title, description, link }) => (
-  <div className="flex justify-start items-start flex-col border border-gray-200 p-6 rounded-lg shadow-sm bg-[#F9F9F9]">
+  <motion.div
+    className="flex justify-start items-start flex-col border border-gray-200 p-6 rounded-lg shadow-sm bg-[#F9F9F9]"
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+  >
     <div className="text-sm text-gray-500">{date}</div>
     <h3 className="text-left text-xl font-medium mt-2 text-gray-600">{title}</h3>
     <p className="text-gray-600 text-left mt-3 text-sm leading-relaxed">{description}</p>
@@ -18,7 +24,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ date, title, description, link }) =
     >
       read more <ChevronRight className="h-4 w-4 ml-1" />
     </a>
-  </div>
+  </motion.div>
 );
 
 export default NewsCard;
