@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 // User Schema
 const AuthSchema = new Schema(
   {
-    _id: mongoose.Schema.Types.ObjectId,
+    // _id: mongoose.Schema.Types.ObjectId,
     id: {
       type: String,
       required: [true, "Please provide an Employee ID or Organization ID"],
