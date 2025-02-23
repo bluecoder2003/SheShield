@@ -107,7 +107,7 @@ export default function HomeScreen() {
         
         {isAuthenticated ? (
           <AnimatedButton
-          href={userId ? `/report/getorgReport/${userId}` : "#"}
+          href={userId ? `/report/getorgreport/${userId}` : "#"}
 
           className="px-2 py-2 text-red-600 transition-colors group">
             Show Reports

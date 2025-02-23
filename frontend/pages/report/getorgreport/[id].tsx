@@ -4,11 +4,12 @@ import Image from "next/image";
 interface Report {
   id: string;
   employeeId: string;
-  harasserName: string;
+  harassername: string;
   details: string;
   description: string;
   harassmentType: string;
   evidence: string[];
+  harrasserdetails: string;
 }
 
 const OrganizationReport: React.FC = () => {
@@ -38,13 +39,13 @@ const OrganizationReport: React.FC = () => {
   
           if (!res.ok) {
             const errorData = await res.json();
-            throw new Error(`❌ HTTP ${res.status} - ${errorData.message || "Unknown error"}`);
+            throw new Error(` HTTP ${res.status} - ${errorData.message || "Unknown error"}`);
           }
   
           return res.json();
         })
         .then((data) => {
-          console.log("✅ Reports fetched:", data);
+          console.log(" Reports fetched:", data);
           setReports(data.reports || []);
         })
         .catch((error) => {
@@ -95,17 +96,17 @@ const OrganizationReport: React.FC = () => {
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <span className="text-gray-500">Harasser Name - </span>
-                      <span className="text-gray-700">{report.harasserName}</span>
+                      <span className="text-black">{report.harassername}</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <span className="text-gray-500">Harassment Details - </span>
-                      <span className="text-gray-700">{report.details}</span>
+                      <span className="text-gray-500">Harasser Desg - </span>
+                      <span className="text-black">{report.harrasserdetails}</span>
                     </div>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <span className="text-gray-500">Incident Description - </span>
-                      <span className="text-gray-700">{report.description}</span>
+                      <span className="text-gray-700">{report.details}</span>
                     </div>
                   </div>
                 </div>

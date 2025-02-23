@@ -107,7 +107,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           icon: 'success',
           title: 'Login successful!',
         }).then(() => {
-          router.push(`/report/getorgReport/${data.user._id}`); // Redirect to the organization report page
+          router.push(`/report/getorgreport/${data.user._id}`); // Redirect to the organization report page
         });
       } else {
         const data = await res.json();
