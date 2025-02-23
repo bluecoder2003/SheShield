@@ -6,6 +6,7 @@ import {
   Facebook,
   Mail,
   Github,
+  Quote
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -94,7 +95,8 @@ export default function LandingPage() {
             src="/sheshield-logo.jpg"
             className="w-48 h-auto mx-auto mb-8"
           />
-          <h1 className="text-4xl md:text-6xl font-serif mb-16 text-[#222222]">
+          <div className="flex flex-col items-center justify-center mb-14">
+          <h1 className="text-4xl md:text-6xl font-serif mb-6 text-[#222222]">
             Courage starts with a{" "}
             <AnimatedButton
               href="/auth/signup"
@@ -103,6 +105,12 @@ export default function LandingPage() {
               report
             </AnimatedButton>
           </h1>
+          <div className="flex flex-row gap-0 md:gap-2">
+          <Quote className="text-red-600 transform scale-x-[-1] size-4" />
+          <p className="px-2 py-2 text-red-600 transition-colors font-instrument-serif italic group">Report anonymously. Break the silence, not your privacy.</p>
+          <Quote className="text-red-600 size-4" />
+          </div>
+          </div>
 
           <NewsSection />
           <div className="flex flex-col md:flex-row gap-6 mt-20 justify-center items-center">
