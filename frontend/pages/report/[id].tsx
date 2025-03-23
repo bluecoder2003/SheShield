@@ -40,6 +40,10 @@ const EmployeeReport = () => {
     }
   };
 
+  const handleRedirect = () => {
+    router.push('/');
+  };
+
   // Upload file to Cloudinary
   const uploadFile = async (file: File): Promise<string | null> => {
     const formData = new FormData();
@@ -117,7 +121,7 @@ const EmployeeReport = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 relative">
-        <button className="absolute right-4 top-4 text-textblack hover:text-textblack">
+        <button className="absolute right-4 top-4 text-textblack hover:text-textblack" onClick={handleRedirect}>
           <X size={20} />
         </button>
         <h1 className="text-xl font-normal mb-6 text-textblack hover:text-textblack">Don&apos;t be scared, we got you.</h1>

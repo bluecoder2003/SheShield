@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { X } from 'lucide-react';
+import { useRouter } from 'next/router';
 
 type OrganizationType = {
   _id: string;
@@ -22,6 +23,8 @@ const ListOfOrgs = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
   type Error = string | any ;
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -71,10 +74,14 @@ const ListOfOrgs = () => {
     org.organizationName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleRedirect = () => {
+    router.push('/');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg relative">
-        <button className="absolute right-4 top-4 text-gray-400 hover:text-gray-600">
+        <button className="absolute right-4 top-4 text-gray-400 hover:text-gray-600" onClick={handleRedirect}>
           <X size={20} />
         </button>
 

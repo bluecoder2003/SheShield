@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { useAuth } from '@/Context/Authcontext';
+import { useRouter } from 'next/router';
 
 const Login = () => {
   const { login } = useAuth();
   const [organizationId, setOrganizationId] = useState('');
-  
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await login(organizationId);
   };
 
+  const handleRedirect = () => {
+    router.push('/');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg relative p-6">
-        <button className="absolute right-4 top-4 text-gray-400 hover:text-gray-600">
+        <button className="absolute right-4 top-4 text-gray-400 hover:text-gray-600" onClick={handleRedirect}>
           <X size={20} />
         </button>
 

@@ -20,12 +20,14 @@ const Signup = () => {
     await register(id, officePhoneNo, organizationName, department, desg, officeAddress, role);
   };
 
-  
+  const handleRedirect = () => {
+    router.push('/');
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg relative">
-        <button className="absolute right-4 top-4 text-textblack hover:text-gray-600">
+        <button className="absolute right-4 top-4 text-textblack hover:text-gray-600"  onClick={handleRedirect}>
           <X size={20} />
         </button>
 
