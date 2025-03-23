@@ -119,7 +119,7 @@ const OrganizationReport: React.FC = () => {
       {selectedReport && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full">
-            <h2 className="text-xl font-semibold mb-4">
+            <h2 className="text-xl font-semibold mb-4 text-gray-600">
               Evidence for Report #{selectedReport.id}
             </h2>
             <div className="space-y-4">
