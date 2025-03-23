@@ -35,7 +35,7 @@ Workplace sexual harassment often goes unreported due to fear of retaliation and
 
 ### 🎨 Design
 Check out our detailed UI/UX design:
-[Figma Design Link](https://www.figma.com/design/HLD7HxG2nsRuJq3BSd6Psg/sheshieid?node-id=34-1256&t=h49QEnlccoJygOS5-0)
+[Figma Design Link](https://www.figma.com/design/SVdUdNG7n16eUHZLpWJbBt/SheShield?node-id=0-1&t=nTjElXK5CuFMdmHy-1)
 
 ### 🚀 Hackathon Tracks
 - MongoDB Atlas Track
