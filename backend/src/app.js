@@ -12,11 +12,10 @@ dotenv.config();
 const app = express();
 
 // Array of allowed origins
-const allowedOrigins = ['https://she-shield-r5c8.vercel.app/'];
+const allowedOrigins = ['https://she-shield-r5c8.vercel.app'];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) === -1) {
       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
@@ -25,12 +24,16 @@ const corsOptions = {
     return callback(null, true);
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization','x-auth-token'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'],
   credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 };
 
-// Use CORS middleware with options
 app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions)); // Handle preflight requests
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
